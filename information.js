@@ -12,14 +12,16 @@ function Pad() {
         throw "NoPadFound"
     }
 
+    this.lastCol = this.sheet.getRange("1:1").getLastColumn();
+
     this.showName = function() {
         Logger.log("Name: " + this.sheetName);
     }
 
     // Get current date row number
-    function getDateRow(sheet) {
+    this.getDateRow = function() {
         var now = new Date();
-        var values = sheet.getRange("A:A").getValues();
+        var values = this.sheet.getRange("A:A").getValues();
         Logger.log("Length of values: " + values.length);
         // Logger.log(values);
 
@@ -30,10 +32,21 @@ function Pad() {
         }
         return -1;
     }
-    this.currentDateRow = getDateRow(this.sheet);
 
     // Get current date pad content
-    this.contents = this.sheet.getRange(this.currentDateRow, 2, 1, 5).getValues();
+    this.getUndone = function(row, col) {
+        var runs = this.sheet.getRange(row, col).getRichTextValue().getRuns();
+        var undone = [];
+
+        for (var i = 0; i < runs.length; i++) {
+            if (! runs[i].getTextStyle().isStrikethrough()) {
+                undone.push(runs[i]);
+            }
+        }
+
+        return undone;
+    }
+
 
     function _sameDate(d1, d2) {
         return (d1.getDate() === d2.getDate() 

@@ -19,7 +19,33 @@ function tester() {
 }
 
 
+function update() {
+    try {
+        var workpad = new Pad();
+    }
+    catch (e) {
+        Logger.log(e.message);
+        return 1;
+    }
 
-function main() {
+    workpad.showName();
+
+    todayRow = workpad.getDateRow()
+    // Logger.log("Today row: " + todayRow);
+    if (todayRow == -1) {
+        Logger.log("Failed to find date");
+        return 1;
+    }
+
+    Logger.log("Last column: " + workpad.lastCol);
+    // Read through undone tasks
+    for (var i = 2; i <= workpad.lastCol; i++) {
+        Logger.log("Column: " + i);
+
+        tasks = workpad.getUndone(todayRow, i);
+        for (var j = 0; j < tasks.length; j++) {
+            Logger.log(tasks[j].getText());
+        }
+    }
 
 }

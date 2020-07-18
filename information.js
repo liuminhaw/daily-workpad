@@ -33,7 +33,21 @@ function Pad() {
         return -1;
     }
 
-    // Get current date pad content
+    // Get today's pad finished tasks
+    this.getDone = function(row, col) {
+        var runs = this.sheet.getRange(row, col).getRichTextValue().getRuns();
+        var done = [];
+
+        for (var i = 0; i < runs.length; i++) {
+            if (runs[i].getTextStyle().isStrikethrough()) {
+                done.push(runs[i]);
+            }
+        }
+
+        return done;
+    }
+
+    // Get today's pad unfinished tasks
     this.getUndone = function(row, col) {
         var runs = this.sheet.getRange(row, col).getRichTextValue().getRuns();
         var undone = [];
@@ -45,6 +59,30 @@ function Pad() {
         }
 
         return undone;
+    }
+
+    // Set task for next day
+    this.updateTasks = function(row, col, text) {
+        // Preserve exist text
+        existText = this.sheet.getRange(row, col).getValue().replace(/\s+$/g, "");
+        text = text.replace(/\s+$/g, "");
+
+        if (existText.length != 0) {
+            existText = existText.concat("\n");
+            text = existText + text;
+        }
+        
+        this.sheet.getRange(row, col).setValue(text);
+        this.sheet.getRange(row, col).setVerticalAlignment("top");
+    }
+
+    // Reload today's task
+    this.cleanTasks = function(row, col, text) {
+        text = text.replace(/\s+$/g, "");
+
+        this.sheet.getRange(row, col).setValue(text);
+        this.sheet.getRange(row, col).setVerticalAlignment("top");
+        this.sheet.getRange(row, col).setFontLine("line-through");
     }
 
 

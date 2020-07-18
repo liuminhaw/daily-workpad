@@ -2,8 +2,8 @@
 function tester() {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     Logger.log(sheet.getName());
-    var cell = sheet.getRange("C9");
-    //Logger.log(cell.getValue());
+
+    var cell = sheet.getRange("C14");
     var richText = cell.getRichTextValue();
     var runs = richText.getRuns()
     Logger.log("length: " + runs.length);
@@ -13,8 +13,6 @@ function tester() {
         Logger.log(runs[i].getText());
         Logger.log(richText.getRuns()[i].getTextStyle().isStrikethrough());
     }
-
-    Logger.log("Test clasp");
 
 }
 
@@ -38,14 +36,31 @@ function update() {
     }
 
     Logger.log("Last column: " + workpad.lastCol);
-    // Read through undone tasks
+    // Read through today's tasks and update
     for (var i = 2; i <= workpad.lastCol; i++) {
         Logger.log("Column: " + i);
+        var newPadTask = ""
 
-        tasks = workpad.getUndone(todayRow, i);
-        for (var j = 0; j < tasks.length; j++) {
-            Logger.log(tasks[j].getText());
+        undoneTasks = workpad.getUndone(todayRow, i);
+        for (var j = 0; j < undoneTasks.length; j++) {
+            Logger.log(undoneTasks[j].getText());
+            taskText = undoneTasks[j].getText().replace(/^\s+|\s+$/g, '');
+            newPadTask += taskText + "\n";
         }
+        // Set undone task for next day
+        Logger.log("New Task: " + newPadTask);
+        workpad.updateTasks(todayRow + 1, i, newPadTask);
+
+        var padTask = "";
+        doneTasks = workpad.getDone(todayRow, i);
+        for (var j = 0; j < doneTasks.length; j++) {
+            Logger.log(doneTasks[j].getText());
+            taskText = doneTasks[j].getText().replace(/^\s+|\s+$/g, '');
+            padTask += taskText + "\n";
+        }
+        // Update finished task for today
+        Logger.log("Finished Task: " + padTask);
+        workpad.cleanTasks(todayRow, i, padTask);
     }
 
 }

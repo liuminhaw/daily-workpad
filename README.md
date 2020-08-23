@@ -8,9 +8,12 @@ Custom daily workpad on google sheet
 
 ## Version 0.1.0
 - Update function: Manually update each day's tasks
+    - `workpad >> New Update`
 
 ## Usage
-- Fill todo tasks inside each catagory according to planned date
-    - ![Define tasks](doc/img/define-tasks.png)
-- Mark task as complete by changing text style to `strikethrough`
-- Click `New Update` function in `workpad` menu to update remained tasks to next day
+- Fill todo tasks inside each catagory according to planned date  
+  ![Define tasks](doc/img/define-tasks.png)
+- Mark task as complete by changing text style to `strikethrough`  
+  ![Mark Done](doc/img/mark-done.png)
+- Click `New Update` function in `workpad` menu to update remained tasks to next day  
+  ![Update tasks](doc/img/update-tasks.png)

@@ -8,7 +8,7 @@ Custom daily workpad on google sheet
 
 ## Version 0.1.0
 - Update function: Manually update each day's tasks
-    - `workpad >> New Update`
+    - `workpad >> Update`
 
 ## Usage
 - Fill todo tasks inside each catagory according to planned date  

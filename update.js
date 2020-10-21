@@ -26,6 +26,7 @@ function update() {
 
         for (var j = 0; j < remainTasks.length; j++) {
             Logger.log(remainTasks[j].getText());
+            // Replacement of spaces from beginning and end of string
             taskText = remainTasks[j].getText().replace(/^\s+|\s+$/g, '');
             newPadTask += taskText + "\n";
         }

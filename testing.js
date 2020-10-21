@@ -5,16 +5,17 @@
  * @return text style information of selected cell.
  * @customfunction
  */
-function test_style(cellA1) {
-    try {
-        var workpad = new Pad();
-    }
-    catch (e) {
-        Logger.log(e.message);
-        return 1;
+function test_style() {
+
+    var a1Notation = a1_prompt();
+    if (a1Notation == null) {
+        Logger.log("No a1 notation returned");
+        return 1
     }
 
-    var runs = workpad.sheet.getRange(cellA1).getRichTextValue().getRuns();
+    var readRange = SpreadsheetApp.getActiveSpreadsheet().getRange(a1Notation);
+
+    var runs = readRange.getRichTextValue().getRuns();
 
     var logText = "";
     for (var i = 0; i < runs.length; i++) {
@@ -28,5 +29,25 @@ function test_style(cellA1) {
         logText += "Is underline: " + runs[i].getTextStyle().isUnderline() + "\n\n";
     }
 
-    return logText;
+    Logger.log(logText);
+
+    var writeRange = SpreadsheetApp.getActiveSpreadsheet().getRange("Logger!A2");
+    writeRange.setValue(logText);
+}
+
+function a1_prompt() {
+    var ui = SpreadsheetApp.getUi(); // Same variations.
+
+    var result = ui.prompt(
+        "Get cell's style properties",
+        "Please enter cell A1 notation:",
+        ui.ButtonSet.OK_CANCEL);
+
+    // Process the user's response.
+    var button = result.getSelectedButton();
+    var text = result.getResponseText();
+    if (button == ui.Button.OK) {
+        // User clicked "OK".
+        return text;
+    } 
 }
